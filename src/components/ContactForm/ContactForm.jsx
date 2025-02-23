@@ -4,8 +4,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { nanoid } from "nanoid";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
+
 import { IoPersonAddSharp } from "react-icons/io5";
+import { addContact } from "../../redux/contactsOps";
 const ContactForm = ({}) => {
   const patternNumber = /^(\d{3}-\d{2}-\d{2}|\d{7})$/;
   const patternName = /^[A-Za-zА-Яа-яЇїІіЄєҐґ]+$/;
