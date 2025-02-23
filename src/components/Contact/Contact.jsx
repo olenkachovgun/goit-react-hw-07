@@ -14,6 +14,7 @@ import {
   editContact,
   updateLikeStatus,
 } from "../../redux/contactsOps";
+import toast from "react-hot-toast";
 
 const Contact = ({ name, number, id }) => {
   const dispatch = useDispatch();
@@ -37,7 +38,14 @@ const Contact = ({ name, number, id }) => {
         </div>
       </div>
       <div className={s.contactBtn}>
-        <button type="button" onClick={() => dispatch(deleteContact(id))}>
+        <button
+          type="button"
+          onClick={() => {
+            dispatch(deleteContact(id));
+
+            toast.error(`Contact "${name}" is deleted!`);
+          }}
+        >
           <MdDelete />
           <span>Delete</span>
         </button>

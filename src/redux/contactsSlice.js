@@ -6,6 +6,7 @@ import {
   editContact,
   updateLikeStatus,
 } from "./contactsOps";
+import toast from "react-hot-toast";
 // Початковий стан редюсера слайсу:
 const initialState = {
   items: [
