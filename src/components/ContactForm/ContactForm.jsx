@@ -24,7 +24,7 @@ const ContactForm = ({ initialValues, text = "Add", closeModal }) => {
   });
 
   const defaultValues = {
-    id: nanoid(),
+    id: "",
     name: "",
     number: "",
   };
