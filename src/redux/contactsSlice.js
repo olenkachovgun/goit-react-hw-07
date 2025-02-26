@@ -62,6 +62,7 @@ const slice = createSlice({
       })
       .addCase(editContact.fulfilled, (state, action) => {
         const item = state.items.find((item) => item.id === action.payload.id);
+        item.id = action.payload.id;
         item.name = action.payload.name;
         item.number = action.payload.number;
         item.like = action.payload.like;

@@ -6,10 +6,11 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 
 import { IoPersonAddSharp } from "react-icons/io5";
-import { addContact } from "../../redux/contactsOps";
-const ContactForm = ({}) => {
-  const patternNumber = /^(\d{3}-\d{2}-\d{2}|\d{7})$/;
-  const patternName = /^[A-Za-zА-Яа-яЇїІіЄєҐґ]+$/;
+import { addContact, editContact } from "../../redux/contactsOps";
+import toast from "react-hot-toast";
+const ContactForm = ({ initialValues, text = "Add", closeModal }) => {
+  const patternNumber = /^(\d{3}-\d{3}-\d{4}|\d{10})$/;
+  const patternName = /^[A-Za-zА-Яа-яЇїІіЄєҐґ ]+$/;
 
   const FeedbackSchema = Yup.object().shape({
     name: Yup.string()
@@ -22,28 +23,39 @@ const ContactForm = ({}) => {
       .matches(patternNumber, "Format is not correct! XXX-XX-XX"),
   });
 
-  const initialValues = {
+  const defaultValues = {
     id: nanoid(),
     name: "",
     number: "",
   };
   const dispatch = useDispatch();
+
   const onSubmit = (values, action) => {
-    const newContact = {
-      id: nanoid(),
-      name: values.name,
-      number: values.number,
-    };
-    dispatch(addContact(newContact));
+    if (values.id) {
+      // Викликаємо editContact, якщо id вже існує
+      dispatch(editContact(values));
+      toast.success(`Contact "${values.name}" is editted!`);
+      closeModal();
+    } else {
+      // Створюємо новий контакт, якщо id немає
+      const newContact = {
+        id: nanoid(),
+        name: values.name,
+        number: values.number,
+      };
+      dispatch(addContact(newContact));
+      toast.success(`New contact "${values.name}" added!`);
+    }
     action.resetForm();
   };
 
   return (
     <div className={s.formContainer}>
       <Formik
-        initialValues={initialValues}
+        initialValues={initialValues || defaultValues}
         onSubmit={onSubmit}
         validationSchema={FeedbackSchema}
+        enableReinitialize={true}
       >
         <Form>
           <label>
@@ -58,7 +70,7 @@ const ContactForm = ({}) => {
           </label>
           <button className={s.btnAddContact} type="submit">
             <IoPersonAddSharp />
-            Add contact
+            {text} contact
           </button>
         </Form>
       </Formik>

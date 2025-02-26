@@ -11,23 +11,23 @@ import toast from "react-hot-toast";
 
 function App() {
   const contacts = useSelector((state) => state.contacts.items);
-  useEffect(() => {
-    const abortController = new AbortController();
-    axios
-      .get("https://dummyjson.com/users", { signal: abortController.signal })
-      .then((response) => console.log(response.data))
-      .catch((error) => {
-        if (axios.isCancel(error)) {
-          console.log("Cancel with abort controller");
-          // toast.error("Cancel with abort controller");
-        } else {
-          console.log("Error fetching data:", error);
-        }
-      });
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const abortController = new AbortController();
+  //   axios
+  //     .get("https://dummyjson.com/users", { signal: abortController.signal })
+  //     .then((response) => console.log(response.data))
+  //     .catch((error) => {
+  //       if (axios.isCancel(error)) {
+  //         console.log("Cancel with abort controller");
+  //         // toast.error("Cancel with abort controller");
+  //       } else {
+  //         console.log("Error fetching data:", error);
+  //       }
+  //     });
+  //   return () => {
+  //     abortController.abort();
+  //   };
+  // }, []);
 
   return (
     <div>

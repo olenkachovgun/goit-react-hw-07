@@ -13,6 +13,6 @@ createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <App />
     </Provider>
-    <Toaster position="top-right" toastOptions={{ duration: 1000 }} />
+    <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
   </StrictMode>
 );

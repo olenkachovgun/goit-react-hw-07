@@ -16,7 +16,7 @@ import {
 } from "../../redux/contactsOps";
 import toast from "react-hot-toast";
 
-const Contact = ({ name, number, id }) => {
+const Contact = ({ edit, name, number, id }) => {
   const dispatch = useDispatch();
   const item = useSelector((state) =>
     state.contacts.items.find((item) => item.id === id)
@@ -49,18 +49,7 @@ const Contact = ({ name, number, id }) => {
           <MdDelete />
           <span>Delete</span>
         </button>
-        <button
-          type="button"
-          onClick={() =>
-            dispatch(
-              editContact({
-                id,
-                name: prompt(`Enter new name:${name}`) ?? name,
-                number: prompt("Enter new number:") ?? number,
-              })
-            )
-          }
-        >
+        <button type="button" onClick={edit}>
           <FaRegEdit />
           <span>Edit</span>
         </button>

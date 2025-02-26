@@ -1,12 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // import { generateContacts } from "../../redux/contactsSlice";
 import { resetFilter } from "../../redux/filtersSlice";
 import Contact from "../Contact/Contact";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchContacts } from "../../redux/contactsOps";
+import {
+  addContact,
+  editContact,
+  fetchContacts,
+} from "../../redux/contactsOps";
 import toast from "react-hot-toast";
+import Modal from "../Modal/Modal";
+import ContactForm from "../ContactForm/ContactForm";
 
 const ContactList = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [item, setItem] = useState();
   const contacts = useSelector((state) => state.contacts.items);
   const filter = useSelector((state) => state.filters.name);
   const dispatch = useDispatch();
@@ -16,11 +24,27 @@ const ContactList = () => {
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
+  const handleSubmit = (values, options) => {
+    dispatch(editContact({ id: item.id, ...values }));
+    //setIsOpen(false);
+    options.resetForm();
+    closeModal();
+  };
 
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   return (
     <ul>
       {filterData.map((item) => (
-        <Contact key={item.id} {...item} />
+        <Contact
+          key={item.id}
+          {...item}
+          edit={() => {
+            setItem(item);
+            setIsOpen(true);
+          }}
+        />
       ))}
 
       {filterData.length === 0 && contacts.length !== 0 && (
@@ -36,16 +60,16 @@ const ContactList = () => {
           </button>
         </>
       )}
-
-      {/* {contacts.length === 0 && (
-        <button
-          onClick={() => dispatch(generateContacts())}
-          type="button"
-          className="btnReset"
-        >
-          Generate Contacts
-        </button>
-      )} */}
+      {isOpen && (
+        <Modal closeModal={closeModal}>
+          <ContactForm
+            text="Edit"
+            initialValues={item}
+            handleSubmit={handleSubmit}
+            closeModal={closeModal}
+          />
+        </Modal>
+      )}
     </ul>
   );
 };
